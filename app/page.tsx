@@ -1,5 +1,9 @@
-import Image from "next/image";
+import ServiceWorkerPermisson from "@/components/ServiceWorkerPermisson";
 
 export default function Home() {
-  return <main>Home Page</main>;
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <ServiceWorkerPermisson />
+    </main>
+  );
 }

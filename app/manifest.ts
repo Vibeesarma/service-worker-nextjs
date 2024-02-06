@@ -9,6 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     background_color: "#4CBD41",
     theme_color: "#4CBD41",
+    orientation: "portrait",
+    serviceworker: { src: "/sw.js", },
     icons: [
       {
         src: "android/android-launchericon-512-512.png",
