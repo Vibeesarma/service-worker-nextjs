@@ -11,8 +11,12 @@ const checkPermission = () => {
 };
 
 // register service worker
-const registerServiceWorker = async () => {
+const registerServiceWorker = async ({ user_id }: { user_id: string }) => {
   const registration = await navigator.serviceWorker.register("/sw.js");
+  navigator.serviceWorker.ready.then((registration) => {
+    registration.active?.postMessage({ user_id });
+  });
+
   return registration;
 };
 
@@ -27,8 +31,14 @@ const requestNotificationPermission = async () => {
   }
 };
 
-export const initServiceWorker = async () => {
+type initServiceWorkerProps = {
+  user_id: string;
+};
+
+export const initServiceWorker = async ({
+  user_id,
+}: initServiceWorkerProps) => {
   checkPermission();
   await requestNotificationPermission();
-  await registerServiceWorker();
+  await registerServiceWorker({ user_id });
 };

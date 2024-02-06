@@ -12,7 +12,7 @@ const urlBase64ToUint8Array = (base64String) => {
 };
 
 // save subscription to database
-const saveSubscription = async (subscription) => {
+const saveSubscription = async (subscription, user_id) => {
   const response = await fetch(
     `https://nutrition-tracker-api-throabh-yt.onrender.com/push_notification/save-subscription`,
     {
@@ -20,7 +20,7 @@ const saveSubscription = async (subscription) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ subscription, user_id: 1 }),
+      body: JSON.stringify({ subscription, user_id }),
       cache: "no-cache",
     }
   );
@@ -30,6 +30,8 @@ const saveSubscription = async (subscription) => {
 // Main function =================================================================
 
 self.addEventListener("activate", async (event) => {
+  console.log("🚀 ~ self.addEventListener ~ event:", event);
+  console.log("service-worker activated");
   /**
    *  This is only work for firfox brower for now
    *  https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
@@ -41,6 +43,10 @@ self.addEventListener("activate", async (event) => {
    * you can create keys using below code,
    *  npx web-push generate-vapid-keys
    */
+});
+
+// check post message
+self.addEventListener("message", async (event) => {
   const subscription = await self.registration.pushManager.subscribe({
     userVisibleOnly: true,
     // below want that key to array buffer format
@@ -48,10 +54,10 @@ self.addEventListener("activate", async (event) => {
       "BL99_EpFmPxNV1HU_0tG3UaEJw-siSetAmeoNMc7HBw6z0Ply-PRxJY-FGg17RXXn0N4tTSab2nUbX7Nt7MlnzQ"
     ),
   });
-  console.log("service-worker activated");
 
-  const response = await saveSubscription(subscription);
-  console.log("🚀 ~ self.addEventListener ~ response:", response);
+  if (event.data.user_id) {
+    const response = await saveSubscription(subscription, event.data.user_id);
+  }
 });
 
 // event listener for push notification listener
