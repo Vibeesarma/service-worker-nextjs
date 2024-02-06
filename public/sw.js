@@ -13,14 +13,17 @@ const urlBase64ToUint8Array = (base64String) => {
 
 // save subscription to database
 const saveSubscription = async (subscription) => {
-  const response = await fetch("http://localhost:3000/save-subscription", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(subscription),
-    cache: "no-cache",
-  });
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/push_notification/save-subscription`,
+    {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ subscription, user_id: 1 }),
+      cache: "no-cache",
+    }
+  );
   return response.json();
 };
 
