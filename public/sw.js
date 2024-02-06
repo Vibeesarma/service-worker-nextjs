@@ -14,7 +14,7 @@ const urlBase64ToUint8Array = (base64String) => {
 // save subscription to database
 const saveSubscription = async (subscription) => {
   const response = await fetch(
-    `${process.env.BACKEND_URL}/push_notification/save-subscription`,
+    `https://nutrition-tracker-api-throabh-yt.onrender.com/push_notification/save-subscription`,
     {
       method: "post",
       headers: {
